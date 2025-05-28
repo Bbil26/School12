@@ -56,10 +56,13 @@ namespace WpfApp1
         {
             if (SelectedStudent != null)
             {
-                using var context = new School12Context();
-                context.Students.Remove(SelectedStudent);
-                context.SaveChanges();
-                Students.Remove(SelectedStudent);
+                if (MessageBox.Show("Удалить запись?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    using var context = new School12Context();
+                    context.Students.Remove(SelectedStudent);
+                    context.SaveChanges();
+                    Students.Remove(SelectedStudent);
+                }
             }
         }
 
@@ -125,7 +128,7 @@ namespace WpfApp1
 
         private void btnAddStudent(object sender, RoutedEventArgs e)
         {
-            var newStudent = new Student { FirstName = "Имя", SecondName = "Фамилия", YearOfBirth = 2000 };
+            var newStudent = new Student { FirstName = "Имя", SecondName = "Фамилия", YearOfBirth = 2000};
             ViewModel.Students.Add(newStudent);
             using var context = new School12Context();
             context.Students.Add(newStudent);
@@ -140,7 +143,7 @@ namespace WpfApp1
         private void btnEditStudent(object sender, RoutedEventArgs e)
         {
             if (ViewModel.SelectedStudent != null)
-            {
+            {   // govnokod, но что поделать?
                 // Сначала отключаем редактирование у всех
                 foreach (var student in ViewModel.Students)
                     student.IsEditing = false;

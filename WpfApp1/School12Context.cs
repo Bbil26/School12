@@ -81,7 +81,7 @@ public partial class School12Context : DbContext
 
             entity.ToTable("student", "school12");
 
-            entity.Property(e => e.IdStudent).HasColumnName("id_student");
+            entity.Property(e => e.IdStudent).HasColumnName("id_student").UseIdentityColumn();
             entity.Property(e => e.FirstName).HasColumnName("first_name");
             entity.Property(e => e.SecondName).HasColumnName("second_name");
             entity.Property(e => e.StudentIdClass).HasColumnName("student_id_class");
