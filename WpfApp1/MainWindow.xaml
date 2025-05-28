@@ -9,9 +9,7 @@
     <Window.DataContext>
         <local:StudentViewModel />
     </Window.DataContext>
-    <Window.Resources>
-        <local:SelectedStudentToVisibilityConverter x:Key="SelectedStudentToVisibilityConverter"/>
-    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -60,10 +58,8 @@
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Grid>
-                                                    <TextBox Text="{Binding FirstName, Mode=TwoWay}"
-                                                         IsReadOnly="{Binding DataContext.IsEditing,
-                                                                              RelativeSource={RelativeSource AncestorType=Window},
-                                                                              Converter={StaticResource InverseBoolConverter}}"
+                                                    <TextBox Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         IsReadOnly="{Binding IsEditing, Converter={StaticResource InverseBoolConverter}}"
                                                          HorizontalAlignment="Stretch"
                                                          VerticalAlignment="Center"
                                                          BorderThickness="0"
@@ -80,10 +76,8 @@
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Grid>
-                                                    <TextBox Text="{Binding SecondName, Mode=TwoWay}"
-                                                         IsReadOnly="{Binding DataContext.IsEditing,
-                                                                              RelativeSource={RelativeSource AncestorType=Window},
-                                                                              Converter={StaticResource InverseBoolConverter}}"
+                                                    <TextBox Text="{Binding SecondName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         IsReadOnly="{Binding IsEditing, Converter={StaticResource InverseBoolConverter}}"
                                                          HorizontalAlignment="Stretch"
                                                          VerticalAlignment="Center"
                                                          BorderThickness="0"
@@ -99,10 +93,8 @@
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Grid>
-                                                    <TextBox Text="{Binding Surname, Mode=TwoWay}"
-                                                         IsReadOnly="{Binding DataContext.IsEditing,
-                                                                              RelativeSource={RelativeSource AncestorType=Window},
-                                                                              Converter={StaticResource InverseBoolConverter}}"
+                                                    <TextBox Text="{Binding Surname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         IsReadOnly="{Binding IsEditing, Converter={StaticResource InverseBoolConverter}}"
                                                          HorizontalAlignment="Stretch"
                                                          VerticalAlignment="Center"
                                                          BorderThickness="0"
@@ -118,10 +110,8 @@
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Grid>
-                                                    <TextBox Text="{Binding YearOfBirth, Mode=TwoWay}"
-                                                         IsReadOnly="{Binding DataContext.IsEditing,
-                                                                              RelativeSource={RelativeSource AncestorType=Window},
-                                                                              Converter={StaticResource InverseBoolConverter}}"
+                                                    <TextBox Text="{Binding YearOfBirth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         IsReadOnly="{Binding IsEditing, Converter={StaticResource InverseBoolConverter}}"
                                                          HorizontalAlignment="Stretch"
                                                          VerticalAlignment="Center"
                                                          BorderThickness="0"
@@ -137,10 +127,8 @@
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Grid>
-                                                    <TextBox Text="{Binding StudentIdClass, Mode=TwoWay}"
-                                                         IsReadOnly="{Binding DataContext.IsEditing,
-                                                                              RelativeSource={RelativeSource AncestorType=Window},
-                                                                              Converter={StaticResource InverseBoolConverter}}"
+                                                    <TextBox Text="{Binding StudentIdClass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         IsReadOnly="{Binding IsEditing, Converter={StaticResource InverseBoolConverter}}"
                                                          HorizontalAlignment="Stretch"
                                                          VerticalAlignment="Center"
                                                          BorderThickness="0"
@@ -158,9 +146,7 @@
                                                 <StackPanel Orientation="Horizontal">
                                                     <Button Content="Принять изменения" Width="130px" Height="20px" Margin="10, 0, 0, 0"
                                                         Click="btnConfirmStudent"
-                                                        Visibility="{Binding DataContext.IsEditing,
-                                                                     RelativeSource={RelativeSource AncestorType=Window},
-                                                                     Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        Visibility="{Binding IsEditing, Converter={StaticResource BoolToVisibilityConverter}}">
                                                        
                                                     </Button>
                                                 </StackPanel>

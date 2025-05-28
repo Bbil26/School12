@@ -23,7 +23,9 @@ public partial class Student : INotifyPropertyChanged
     
     public virtual SchoolClass? StudentIdClassNavigation { get; set; }
 
+    [NotMapped]
     private bool _isEditing;
+    [NotMapped]
     public bool IsEditing
     {
         get => _isEditing;

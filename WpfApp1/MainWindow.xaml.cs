@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using Главное_окно;
 
@@ -43,7 +44,9 @@ namespace WpfApp1
         public void LoadStudents()
         {
             using var context = new School12Context();
-            var students = context.Students.ToList();
+            var students = context.Students
+                          .OrderBy(s => s.IdStudent) // сортировка по ID по умолчанию
+                          .ToList();
             Students.Clear();
             foreach (var student in students)
                 Students.Add(student);
@@ -136,12 +139,27 @@ namespace WpfApp1
 
         private void btnEditStudent(object sender, RoutedEventArgs e)
         {
-            ViewModel.IsEditing = true;
+            if (ViewModel.SelectedStudent != null)
+            {
+                // Сначала отключаем редактирование у всех
+                foreach (var student in ViewModel.Students)
+                    student.IsEditing = false;
+
+                // Включаем только у выбранного
+                ViewModel.SelectedStudent.IsEditing = true;
+            }
         }
 
         private void btnConfirmStudent(object sender, RoutedEventArgs e)
         {
-            ViewModel.SaveEditedStudent();
+            StudentsGrid.CommitEdit(DataGridEditingUnit.Cell, true);
+            StudentsGrid.CommitEdit(DataGridEditingUnit.Row, true);
+
+            if (ViewModel.SelectedStudent != null)
+            {
+                ViewModel.SaveEditedStudent();
+                ViewModel.SelectedStudent.IsEditing = false;
+            }
         }
 
         //Интерфейс для работы с таблицей заболеваемости
