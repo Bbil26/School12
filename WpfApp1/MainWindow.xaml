@@ -147,13 +147,11 @@
                                                     <Button Content="Принять изменения" Width="130px" Height="20px" Margin="10, 0, 0, 0"
                                                         Click="btnConfirmStudent"
                                                         Visibility="{Binding IsEditing, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                       
                                                     </Button>
                                                 </StackPanel>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-                                    
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Grid>
