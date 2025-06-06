@@ -42,8 +42,10 @@ namespace Главное_окно
         //Отладка
         private void Autorun()
         {
-            login.Text = "user1";
+            login.Text = "user2";
             password.Password = "123";
+            //login.Text = "admin";
+            //password.Password = "admin";
             Thread.Sleep(1000);
             btnAuth_Click(btnAuth, new RoutedEventArgs());
         }

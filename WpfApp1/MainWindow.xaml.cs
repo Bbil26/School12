@@ -5,93 +5,21 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using Главное_окно;
+using Главное_окно.StudentModel;
 
 
 namespace WpfApp1
 {
-    public class StudentViewModel : INotifyPropertyChanged
-    {
-        public ObservableCollection<Student> Students { get; set; } = new();
-
-        private Student? _selectedStudent;
-        public Student? SelectedStudent
-        {
-            get => _selectedStudent;
-            set
-            {
-                _selectedStudent = value;
-                OnPropertyChanged(nameof(SelectedStudent));
-            }
-        }
-
-        private bool _isEditing;
-        public bool IsEditing
-        {
-            get => _isEditing;
-            set
-            {
-                _isEditing = value;
-                OnPropertyChanged(nameof(IsEditing));
-            }
-        }
-
-        public StudentViewModel()
-        {
-            LoadStudents();
-        }
-
-        public void LoadStudents()
-        {
-            using var context = new School12Context();
-            var students = context.Students
-                          .OrderBy(s => s.IdStudent) // сортировка по ID по умолчанию
-                          .ToList();
-            Students.Clear();
-            foreach (var student in students)
-                Students.Add(student);
-        }
-
-        public void DeleteSelectedStudent()
-        {
-            if (SelectedStudent != null)
-            {
-                if (MessageBox.Show("Удалить запись?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-                {
-                    using var context = new School12Context();
-                    context.Students.Remove(SelectedStudent);
-                    context.SaveChanges();
-                    Students.Remove(SelectedStudent);
-                }
-            }
-        }
-
-        public void SaveEditedStudent()
-        {
-            if (SelectedStudent != null)
-            {
-                using var context = new School12Context();
-                context.Students.Update(SelectedStudent);
-                context.SaveChanges();
-            }
-
-            IsEditing = false;
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged(string prop) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-    }
-
-    
     public partial class MainWindow : Window
     { 
-        UserDatum curUser;
+        public static UserDatum? curUser;
+        public static Teacher? curTeacher;
         public MainWindow()
         {
             InitializeComponent();
             OpenAuthWindow();
-
         }
 
         //Подключеник к БД
@@ -100,11 +28,6 @@ namespace WpfApp1
         private void btnLogin(object sender, RoutedEventArgs e)
         {
 
-        }
-
-        private bool authUser()
-        {
-            return true;
         }
 
         //Запуск модального окна с авторизацией
@@ -116,7 +39,14 @@ namespace WpfApp1
             if (res == true)
             {
                 curUser = authWindow.authUser;
-                test.Content = curUser.Login;
+                test.Content = curUser.Login; //ОТЛАДКА!@!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+                //
+
+                using var context = new School12Context();
+                curTeacher = context.Teachers.FirstOrDefault(t => t.TeacherIdUser == curUser.IdUser);
+
+                ((StudentViewModel)this.DataContext).LoadStudents();
             }
             else
                 Close();
@@ -128,11 +58,7 @@ namespace WpfApp1
 
         private void btnAddStudent(object sender, RoutedEventArgs e)
         {
-            var newStudent = new Student { FirstName = "Имя", SecondName = "Фамилия", YearOfBirth = 2000};
-            ViewModel.Students.Add(newStudent);
-            using var context = new School12Context();
-            context.Students.Add(newStudent);
-            context.SaveChanges();
+            ViewModel.AddStudent();
         }
 
         private void btnRemoveStudent(object sender, RoutedEventArgs e)
@@ -143,13 +69,11 @@ namespace WpfApp1
         private void btnEditStudent(object sender, RoutedEventArgs e)
         {
             if (ViewModel.SelectedStudent != null)
-            {   // govnokod, но что поделать?
-                // Сначала отключаем редактирование у всех
-                foreach (var student in ViewModel.Students)
-                    student.IsEditing = false;
-
+            {   
                 // Включаем только у выбранного
                 ViewModel.SelectedStudent.IsEditing = true;
+                if (curUser != null && curUser.UserIdRole == 1)
+                    ViewModel.SelectedStudent.IsEditingOnlyAdmin = true;
             }
         }
 
@@ -162,11 +86,12 @@ namespace WpfApp1
             {
                 ViewModel.SaveEditedStudent();
                 ViewModel.SelectedStudent.IsEditing = false;
+                if (curUser != null && curUser.UserIdRole == 1)
+                    ViewModel.SelectedStudent.IsEditingOnlyAdmin = false;
             }
         }
 
         //Интерфейс для работы с таблицей заболеваемости
-
 
     }
 }

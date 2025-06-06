@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using WpfApp1;
 
 namespace Главное_окно;
 
@@ -25,6 +26,10 @@ public partial class Student : INotifyPropertyChanged
 
     [NotMapped]
     private bool _isEditing;
+
+    [NotMapped]
+    private bool _isEditingOnlyAdmin;
+
     [NotMapped]
     public bool IsEditing
     {
@@ -33,6 +38,17 @@ public partial class Student : INotifyPropertyChanged
         {
             _isEditing = value;
             OnPropertyChanged(nameof(IsEditing));
+        }
+    }
+
+    [NotMapped]
+    public bool IsEditingOnlyAdmin
+    {
+        get => _isEditingOnlyAdmin;
+        set
+        {
+            _isEditingOnlyAdmin = value;
+            OnPropertyChanged(nameof(IsEditingOnlyAdmin));
         }
     }
 
