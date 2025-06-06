@@ -6,7 +6,9 @@
         xmlns:vm="clr-namespace:Главное_окно.StudentModel"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        MinHeight="250" MinWidth="400"
+        WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <vm:StudentViewModel />
     </Window.DataContext>
@@ -35,11 +37,24 @@
                             </Grid.RowDefinitions>
 
                             <!-- Панель кнопок -->
-                            <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
-                                <Button Content="Добавить" Click="btnAddStudent" Width="70"/>
-                                <Button Content="Удалить" Click="btnRemoveStudent" Margin="5 0 0 0" Width="60"/>
-                                <Button Content="Редактировать" Click="btnEditStudent" Margin="5 0 0 0" Width="95"/>
-                            </StackPanel>
+                            <Grid Margin="0 0 0 10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <!-- Левая часть -->
+                                    <ColumnDefinition Width="Auto"/>
+                                    <!-- Правая часть -->
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Orientation="Horizontal" Grid.Column="0">
+                                    <Button Content="Добавить" Click="btnAddStudent" Width="70"/>
+                                    <Button Content="Удалить" Click="btnRemoveStudent" Margin="5 0 0 0" Width="60"/>
+                                    <Button Content="Редактировать" Click="btnEditStudent" Margin="5 0 0 0" Width="95"/>
+                                </StackPanel>
+
+                                <!-- Кнопка справа -->
+                                <Button Content="Добавить болезнь" Click="btnAddDisease"
+                                Grid.Column="1" Width="115"  HorizontalAlignment="Right"/>
+                            </Grid>
 
                             <!-- Таблица студентов -->
                             <DataGrid Grid.Row="1"

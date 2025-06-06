@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:Главное_окно"
         mc:Ignorable="d"
         Title="Авторизация" Height="270" Width="500"
-        Background="#ccc" ResizeMode="NoResize">
+        Background="#ccc" ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
     
     <Grid>
         <Grid.ColumnDefinitions>

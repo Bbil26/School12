@@ -20,6 +20,7 @@ namespace Главное_окно
 
         }
 
+        //Зашифровать Если останется время!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         private void btnAuth_Click(object sender, RoutedEventArgs e)
         {
 
@@ -39,7 +40,7 @@ namespace Главное_окно
             login.Focus();
         }
 
-        //Отладка
+        //Отладка, ПОТОМ УДАЛИТЬ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         private void Autorun()
         {
             login.Text = "user2";

@@ -20,17 +20,12 @@ namespace WpfApp1
         {
             InitializeComponent();
             OpenAuthWindow();
+            OpenDiseaseWindow();
         }
-
-        //Подключеник к БД
-
-        //Интерфейс для авторизации
-        private void btnLogin(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        //Запуск модального окна с авторизацией
+        
+        //
+        // Запуск модального окна с авторизацией
+        //
         private void OpenAuthWindow()
         {
             Auth authWindow = new Auth();
@@ -41,8 +36,6 @@ namespace WpfApp1
                 curUser = authWindow.authUser;
                 test.Content = curUser.Login; //ОТЛАДКА!@!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-                //
-
                 using var context = new School12Context();
                 curTeacher = context.Teachers.FirstOrDefault(t => t.TeacherIdUser == curUser.IdUser);
 
@@ -52,8 +45,9 @@ namespace WpfApp1
                 Close();
         }
 
-        //Интерфейс для работы с БД
-
+        //
+        // Таблица "Students"
+        //
         private StudentViewModel ViewModel => (StudentViewModel)DataContext;
 
         private void btnAddStudent(object sender, RoutedEventArgs e)
@@ -93,5 +87,22 @@ namespace WpfApp1
 
         //Интерфейс для работы с таблицей заболеваемости
 
+        private void OpenDiseaseWindow()
+        {
+            DiseaseWindow diseaseWindow = new DiseaseWindow("Сюда id studenta");
+            bool? res = diseaseWindow.ShowDialog();
+
+            if (res == true)
+            {
+
+            }
+            else Close();
+            
+        }
+
+        private void btnAddDisease(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
