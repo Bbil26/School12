@@ -39,9 +39,7 @@ public partial class School12Context : DbContext
 
             entity.ToTable("disease", "school12");
 
-            entity.Property(e => e.IdDisease)
-                .ValueGeneratedNever()
-                .HasColumnName("id_disease");
+            entity.Property(e => e.IdDisease).HasColumnName("id_disease").UseIdentityColumn();
             entity.Property(e => e.DateDisease).HasColumnName("date_disease");
             entity.Property(e => e.DescriptionDisease).HasColumnName("description_disease");
             entity.Property(e => e.DiseaseIdStudent).HasColumnName("disease_id_student");

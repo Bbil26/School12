@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace WpfApp1
+namespace Главное_окно.Ресурсы_для_булинговой_логики
 {
     public class BoolToVisibilityConverter : IValueConverter
     {

@@ -68,7 +68,16 @@ namespace Главное_окно.StudentModel
             {
                 if (MessageBox.Show("Удалить запись?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
+                    // КАК ЖЕ Я ЛЮБЛЮ КОСТЫЛИ!!!!
                     using var context = new School12Context();
+                    var diseasesToRemove = context.Diseases.
+                        Where(d => d.DiseaseIdStudent == SelectedStudent.IdStudent)
+                        .ToList();
+                    if (diseasesToRemove.Any())
+                    {
+                        context.Diseases.RemoveRange(diseasesToRemove);
+                        context.SaveChanges();
+                    }
                     context.Students.Remove(SelectedStudent);
                     context.SaveChanges();
                     Students.Remove(SelectedStudent);
@@ -84,7 +93,6 @@ namespace Главное_окно.StudentModel
                 context.Students.Update(SelectedStudent);
                 context.SaveChanges();
             }
-
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -92,5 +100,3 @@ namespace Главное_окно.StudentModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
     }
 }
-
-

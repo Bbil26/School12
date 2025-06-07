@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Главное_окно;
 
@@ -10,7 +12,7 @@ public partial class Disease
 
     public string? DescriptionDisease { get; set; }
 
-    public DateOnly DateDisease { get; set; }
+    public DateTime DateDisease { get; set; }
 
     public long DiseaseIdStudent { get; set; }
 

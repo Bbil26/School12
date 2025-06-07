@@ -6,7 +6,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Главное_окно"
         mc:Ignorable="d"
-        Title="Добавление записи о заболевании" Height="350" Width="500">
+        Title="Добавление записи о заболевании" Height="375" Width="500"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner">
     <Grid>
         <Grid.ColumnDefinitions >
             <ColumnDefinition Width="50"/>
@@ -15,40 +17,77 @@
             <ColumnDefinition Width="50"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="55" />
             <RowDefinition/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">
+        <!-- Заголовок -->
+        <StackPanel Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1">
+            <TextBlock Text="Добавление заболевания для записи:" 
+                       HorizontalAlignment="Center" Name="titleWindow"/>
+            <TextBlock HorizontalAlignment="Center">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="id: {3}  - {0} {1} {2}">
+                        <Binding Path="_fname"/>
+                        <Binding Path="_lname"/>
+                        <Binding Path="_sname"/>
+                        <Binding Path="_idStudent"/>
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock x:Name="test"/>
+        </StackPanel>
+
+        <!-- Тело "таблички" -->
+        <Grid Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition/>
                 <RowDefinition />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <Label Content="Описание болезни" Grid.Row="0"/>
-            <TextBox Grid.Column="1" Margin="10 0 0 0"
-             AcceptsReturn="True"
+            <!-- ID ученика -->
+            <TextBlock Text="ID ученика" Grid.Row="0" Grid.Column="0" />
+            <TextBox Grid.Row="0" Grid.Column="1" 
+                     Name="idBox"
+                     Width="80" Height="19"
+                     IsReadOnly="True"
+                     TextAlignment="Center"
+                     VerticalAlignment="Top"
+                     HorizontalAlignment="Left"/>
+            
+            <!-- Описание болезни -->
+            <TextBlock Text="Описание болезни" Grid.Row="1" Margin="0 0 12 0"/>
+            <TextBox Grid.Column="1" Name="description"
+             AcceptsReturn="True" Grid.Row="1"
              TextWrapping="Wrap"
              VerticalScrollBarVisibility="Auto"/>
 
-            <TextBlock Text="Тяжелая болезнь" Grid.Row="1" Margin="0 20 0 20"/>
-            <CheckBox Content="Да" Grid.Row="1" Grid.Column="1" Margin="0 20 0 20"/>
+            <!-- Тяжелая болезнь -->
+            <TextBlock Text="Тяжелая болезнь" Grid.Row="2" Margin="0 20 0 20"/>
+            <CheckBox Content="Да" Grid.Row="2" Grid.Column="1"
+                      VerticalAlignment="Center" Name="hardDisease"/>
 
-            <TextBlock Text="Выбрать дату" Grid.Row="2" Grid.Column="0"/>
-            <DatePicker Grid.Row="2" Grid.Column="1" Height="30" SelectedDate="{x:Static sys:DateTime.Now}"/>
+            <!-- Выбрать дату -->
+            <TextBlock Text="Выбрать дату" Grid.Row="3" Grid.Column="0"/>
+            <DatePicker Grid.Row="3" Grid.Column="1" Height="26" Name="dateDisease"
+                        SelectedDate="{x:Static sys:DateTime.Now}"/>
 
-            <Button Content="Добавить запись" 
-                    Grid.Row="3" Grid.ColumnSpan="2"
-                    Height="26" Width="120"/>
+            <!-- Добавить запись -->
+            <Button Content="Добавить запись" Margin="0 20 0 0"
+                    Grid.Row="4" Grid.ColumnSpan="2"
+                    Name="btnDis"
+                    Height="26" Width="120"
+                    Click="BtnDisease"/>
         </Grid>
-        
         
     </Grid>
 </Window>

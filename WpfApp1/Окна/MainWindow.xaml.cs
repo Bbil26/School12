@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using Главное_окно;
+using Главное_окно.DiseaseModel;
 using Главное_окно.StudentModel;
 
 
@@ -20,9 +21,14 @@ namespace WpfApp1
         {
             InitializeComponent();
             OpenAuthWindow();
-            OpenDiseaseWindow();
         }
-        
+
+        private void UpdateTables(object sender, SelectionChangedEventArgs e)
+        {
+            ((StudentViewModel)StudentGrid.DataContext).LoadStudents();
+            ((DiseaseViewModel)DiseaseGrid.DataContext).LoadDiseases();
+        }
+
         //
         // Запуск модального окна с авторизацией
         //
@@ -34,12 +40,13 @@ namespace WpfApp1
             if (res == true)
             {
                 curUser = authWindow.authUser;
-                test.Content = curUser.Login; //ОТЛАДКА!@!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
                 using var context = new School12Context();
                 curTeacher = context.Teachers.FirstOrDefault(t => t.TeacherIdUser == curUser.IdUser);
 
-                ((StudentViewModel)this.DataContext).LoadStudents();
+                userInfo.Text = curUser.Login;
+
+                UpdateTables(null, null);
             }
             else
                 Close();
@@ -48,26 +55,28 @@ namespace WpfApp1
         //
         // Таблица "Students"
         //
-        private StudentViewModel ViewModel => (StudentViewModel)DataContext;
+        private StudentViewModel ViewModelStudent => (StudentViewModel)StudentGrid.DataContext;
+        private DiseaseViewModel ViewModelDisease => (DiseaseViewModel)DiseaseGrid.DataContext;
 
         private void btnAddStudent(object sender, RoutedEventArgs e)
         {
-            ViewModel.AddStudent();
+            ViewModelStudent.AddStudent();
         }
 
         private void btnRemoveStudent(object sender, RoutedEventArgs e)
         {
-            ViewModel.DeleteSelectedStudent();
+            ViewModelStudent.DeleteSelectedStudent();
+            UpdateTables(null, null);
         }
 
         private void btnEditStudent(object sender, RoutedEventArgs e)
         {
-            if (ViewModel.SelectedStudent != null)
+            if (ViewModelStudent.SelectedStudent != null)
             {   
                 // Включаем только у выбранного
-                ViewModel.SelectedStudent.IsEditing = true;
+                ViewModelStudent.SelectedStudent.IsEditing = true;
                 if (curUser != null && curUser.UserIdRole == 1)
-                    ViewModel.SelectedStudent.IsEditingOnlyAdmin = true;
+                    ViewModelStudent.SelectedStudent.IsEditingOnlyAdmin = true;
             }
         }
 
@@ -76,33 +85,69 @@ namespace WpfApp1
             StudentsGrid.CommitEdit(DataGridEditingUnit.Cell, true);
             StudentsGrid.CommitEdit(DataGridEditingUnit.Row, true);
 
-            if (ViewModel.SelectedStudent != null)
+            if (ViewModelStudent.SelectedStudent != null)
             {
-                ViewModel.SaveEditedStudent();
-                ViewModel.SelectedStudent.IsEditing = false;
+                ViewModelStudent.SaveEditedStudent();
+                ViewModelStudent.SelectedStudent.IsEditing = false;
                 if (curUser != null && curUser.UserIdRole == 1)
-                    ViewModel.SelectedStudent.IsEditingOnlyAdmin = false;
+                    ViewModelStudent.SelectedStudent.IsEditingOnlyAdmin = false;
             }
         }
 
         //Интерфейс для работы с таблицей заболеваемости
 
-        private void OpenDiseaseWindow()
+        private void OpenDiseaseWindow(string fname, string lname, string sname, long id)
         {
-            DiseaseWindow diseaseWindow = new DiseaseWindow("Сюда id studenta");
+            DiseaseWindow diseaseWindow = new DiseaseWindow(fname, lname, sname, id);
             bool? res = diseaseWindow.ShowDialog();
 
-            if (res == true)
+            if (res == false)
             {
-
+                MessageBox.Show("Добавление болезни прошло неудачно!", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-            else Close();
             
         }
 
+        // Модальное окно для добавления заболеваний
+
         private void btnAddDisease(object sender, RoutedEventArgs e)
         {
+            if (ViewModelStudent.SelectedStudent != null)
+            {
+                OpenDiseaseWindow(ViewModelStudent.SelectedStudent.FirstName,
+                                  ViewModelStudent.SelectedStudent.SecondName,
+                                  ViewModelStudent.SelectedStudent.Surname,
+                                  ViewModelStudent.SelectedStudent.IdStudent);
+            }
+            UpdateTables(null, null);
+        }
 
+        //
+        // Таблица с заболеваниями
+        //
+
+        private void btnEditDisease(object sender, RoutedEventArgs e)
+        {
+            if (ViewModelDisease.SelectedDisease == null) return;
+
+            using var context = new School12Context();
+            var enity = context.Students.First(s => s.IdStudent == ViewModelDisease.SelectedDisease.DiseaseIdStudent);
+
+            DiseaseWindow disWin = new DiseaseWindow(ViewModelDisease.SelectedDisease, enity.FirstName, enity.SecondName, enity.Surname);
+            bool? res = disWin.ShowDialog();
+            if (res == false)
+            {
+                MessageBox.Show("Обновление данных прошло неудачно!", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                UpdateTables(null, null);
+            }
+        }
+
+        private void btnRemoveDisease(object sender, RoutedEventArgs e)
+        {
+            ViewModelDisease.DeleteSelectedDisease();
         }
     }
 }

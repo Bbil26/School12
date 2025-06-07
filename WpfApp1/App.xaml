@@ -2,9 +2,11 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:WpfApp1"
+             xmlns:bo="clr-namespace:Главное_окно.Ресурсы_для_булинговой_логики"
              StartupUri="Окна/MainWindow.xaml">
     <Application.Resources>
-        <local:InverseBoolConverter x:Key="InverseBoolConverter"/>
-        <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-    </Application.Resources>
+        <bo:InverseBoolConverter x:Key="InverseBoolConverter"/>
+        <bo:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <bo:BoolToYesNoConverter x:Key="BoolToYesNoConverter" />
+    </Application.Resources> 
 </Application>
