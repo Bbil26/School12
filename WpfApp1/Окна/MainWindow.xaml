@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:Главное_окно.StudentModel"
         xmlns:dm="clr-namespace:Главное_окно.DiseaseModel"
+        xmlns:um="clr-namespace:Главное_окно.UserModel"
         xmlns:local="clr-namespace:WpfApp1"
         xmlns:bo="clr-namespace:Главное_окно.Ресурсы_для_булинговой_логики"
         mc:Ignorable="d"
@@ -15,6 +16,13 @@
         <bo:BoolToYesNoConverter x:Key="BoolToYesNoConverter" />
         <bo:InverseBoolConverter x:Key="InverseBoolConverter"/>
         <bo:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        
+        <!-- Общий стиль для выравнивания содержимого ячеек по центру по вертикали -->
+        <Style x:Key="CenterVerticalTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="5,0,0,0"/>
+        </Style>
+
     </Window.Resources>
     
     <Grid>
@@ -35,7 +43,7 @@
             <!-- Вкладка учеников -->
             <!-- Вкладка учеников -->
             <TabControl>
-                <TabItem Header="Работа с БД">
+                <TabItem Header="Ученики">
                     <Grid Background="#FFE5E5E5" Name="StudentGrid">
 
                         <Grid.DataContext>
@@ -71,6 +79,7 @@
                                       ItemsSource="{Binding Students}"
                                       SelectedItem="{Binding SelectedStudent, Mode=TwoWay}"
                                       AutoGenerateColumns="False"
+                                      HeadersVisibility="Column"
                                       IsReadOnly="True"
                                       Margin="0 0 0 15"
                                       x:Name="StudentsGrid">
@@ -78,10 +87,18 @@
                                     <!-- ID -->
                                     <DataGridTextColumn Header="ID" 
                                                         Binding="{Binding IdStudent}"     
-                                                        IsReadOnly="True"/>
+                                                        IsReadOnly="True">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
 
                                     <!-- Фамилия FirstName -->
-                                    <DataGridTemplateColumn Header="Фамилия">
+                                    <DataGridTemplateColumn Header="Фамилия" 
+                                                            SortMemberPath="FirstName">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Grid>
@@ -99,7 +116,8 @@
                                     </DataGridTemplateColumn>
 
                                     <!-- Имя SecondName -->
-                                    <DataGridTemplateColumn Header="Имя">
+                                    <DataGridTemplateColumn Header="Имя"
+                                                            SortMemberPath="SecondName">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Grid>
@@ -116,7 +134,8 @@
                                     </DataGridTemplateColumn>
 
                                     <!-- Отчество Surname -->
-                                    <DataGridTemplateColumn Header="Отчество">
+                                    <DataGridTemplateColumn Header="Отчество"
+                                                            SortMemberPath="Surname">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Grid>
@@ -133,7 +152,8 @@
                                     </DataGridTemplateColumn>
 
                                     <!-- Год рождения YearOfBirth -->
-                                    <DataGridTemplateColumn Header="Год рождения">
+                                    <DataGridTemplateColumn Header="Год рождения"
+                                                            SortMemberPath="YearOfBirth">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Grid>
@@ -150,18 +170,20 @@
                                     </DataGridTemplateColumn>
 
                                     <!-- Класс -->
-                                    <DataGridTemplateColumn Header="Класс">
+                                    <DataGridTemplateColumn Header="Класс" 
+                                                            SortMemberPath="StudentIdClass">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <Grid>
-                                                    <TextBox Text="{Binding StudentIdClass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                         IsReadOnly="{Binding IsEditingOnlyAdmin, Converter={StaticResource InverseBoolConverter}}"
-                                                         HorizontalAlignment="Stretch"
-                                                         VerticalAlignment="Center"
-                                                         BorderThickness="0"
-                                                         Padding="2"
-                                                         Background="Transparent"/>
-                                                </Grid>
+                                                <ComboBox ItemsSource="{Binding DataContext.AllClasses, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                          SelectedValue="{Binding StudentIdClass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          SelectedValuePath="IdClass"
+                                                          DisplayMemberPath="NameClass"
+                                                          IsEnabled="{Binding IsEditingOnlyAdmin}"
+                                                          VerticalAlignment="Center"
+                                                          BorderThickness="0"
+                                                          Background="Transparent"
+                                                          Padding="2"
+                                                          />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
@@ -219,67 +241,123 @@
 
                             <!-- Таблица болезней -->
                             <DataGrid Grid.Row="1"
+                                      HeadersVisibility="Column"
                                       ItemsSource="{Binding Diseases}"
                                       SelectedItem="{Binding SelectedDisease, Mode=TwoWay}"
                                       AutoGenerateColumns="False"
                                       Margin="0 0 0 15"
+                                      MinRowHeight="24"
                                       IsReadOnly="True">
                                 <DataGrid.Columns>
 
                                     <!-- ID -->
                                     <DataGridTextColumn Header="ID" 
-                                    Binding="{Binding IdDisease}"     
-                                    IsReadOnly="True"/>
+                                    Binding="{Binding IdDisease}"
+                                    IsReadOnly="True">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
 
                                     <!-- Описание болезни DescriptionDisease -->
-                                    <DataGridTemplateColumn Header="Описание болезни">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <Grid>
-                                                    <TextBox Text="{Binding DescriptionDisease, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                             HorizontalAlignment="Stretch"
-                                                             VerticalAlignment="Center"
-                                                             MaxWidth="250"
-                                                             AcceptsReturn="True"
-                                                             TextWrapping="Wrap"
-                                                             MaxLines="5"
-                                                             IsReadOnly="True"
-                                                             BorderThickness="0"
-                                                             Padding="2"
-                                                             Background="Transparent">
-                                                    </TextBox>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-
+                                    <DataGridTextColumn Header="Описание болезни"
+                                                        MaxWidth="250"
+                                                        Binding="{Binding DescriptionDisease, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"     
+                                                        IsReadOnly="True"
+                                                        ElementStyle="{StaticResource CenterVerticalTextBlockStyle}"/>
                                     <!-- Дата DateDisease -->
-                                    <DataGridTemplateColumn Header="Дата отсутствия">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <Grid>
-                                                    <TextBox Text="{Binding DateDisease, StringFormat=d, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                             HorizontalAlignment="Stretch"
-                                                             VerticalAlignment="Center"
-                                                             BorderThickness="0"
-                                                             IsReadOnly="True"
-                                                             Padding="2"
-                                                             Background="Transparent"/>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="Дата" 
+                                                        Binding="{Binding DateDisease, StringFormat=d, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"     
+                                                        IsReadOnly="True"
+                                                        ElementStyle="{StaticResource CenterVerticalTextBlockStyle}"/>
 
                                     <!-- ID отсутствующего ученика DiseaseIdStudent -->
-                                    <DataGridTemplateColumn Header="ID отсутствующего ученика">
+                                    <DataGridTextColumn Header="ID отсутствующего ученика"
+                                                        Binding="{Binding DiseaseIdStudent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        IsReadOnly="True"
+                                                        ElementStyle="{StaticResource CenterVerticalTextBlockStyle}"/>
+                                    
+                                    <!-- Тяжесть болезни HardDisease -->
+                                    <DataGridTextColumn Header="Тяжесть болезни"
+                                                        Binding="{Binding HardDisease, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
+                                                                    Converter={StaticResource BoolToYesNoConverter}}" 
+                                                        IsReadOnly="True" 
+                                                        ElementStyle="{StaticResource CenterVerticalTextBlockStyle}"/>
+
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+
+                <!-- Вкладка Пользователей -->
+                <!-- Вкладка Пользователей -->
+                <!-- Вкладка Пользователей -->
+                <TabItem Header="Пользователи" Name="UserTab">
+                    <Grid Background="#FFE5E5E5" Name="UserGrid">
+
+                        <Grid.DataContext>
+                            <um:UserViewModel/>
+                        </Grid.DataContext>
+
+                        <Grid Margin="10">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="32"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Панель кнопок -->
+                            <Grid Margin="0 0 0 10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Кнопочки -->
+                                <StackPanel Orientation="Horizontal" Grid.Column="0">
+                                    <Button Content="Добавить" Click="btnAddUser" Width="70"/>
+                                    <Button Content="Удалить" Click="btnRemoveUser" Margin="5 0 0 0" Width="60"/>
+                                    <Button Content="Редактировать" Click="btnEditUser" Margin="5 0 0 0" Width="95"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- Таблица Пользователей -->
+                            <DataGrid Grid.Row="1"
+                                      HeadersVisibility="Column"
+                                      ItemsSource="{Binding UserData}"
+                                      SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
+                                      AutoGenerateColumns="False"
+                                      IsReadOnly="True"
+                                      Margin="0 0 0 15"
+                                      x:Name="UsersGrid">            
+                                <DataGrid.Columns>
+                                    <!-- ID -->
+                                    <DataGridTextColumn Header="ID" 
+                                    Binding="{Binding IdUser}"
+                                    IsReadOnly="True">
+                                        <DataGridTextColumn.ElementStyle>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                            </Style>
+                                        </DataGridTextColumn.ElementStyle>
+                                    </DataGridTextColumn>
+
+                                    <!-- Логин Login -->
+                                    <DataGridTemplateColumn Header="Логин"
+                                                            SortMemberPath="Login">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Grid>
-                                                    <TextBox Text="{Binding DiseaseIdStudent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    <TextBox Text="{Binding Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                             IsReadOnly="{Binding IsEditing, Converter={StaticResource InverseBoolConverter}}"
                                                              HorizontalAlignment="Stretch"
                                                              VerticalAlignment="Center"
                                                              BorderThickness="0"
-                                                             IsReadOnly="True"
                                                              Padding="2"
                                                              Background="Transparent"/>
                                                 </Grid>
@@ -287,20 +365,52 @@
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
 
-                                    <!-- Тяжесть болезни HardDisease -->
-                                    <DataGridTemplateColumn Header="Тяжесть болезни">
+                                    <!-- Пароль Password -->
+                                    <DataGridTemplateColumn Header="Пароль"
+                                                            SortMemberPath="Password">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Grid>
-                                                    <TextBox Text="{Binding HardDisease, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
-                                                                    Converter={StaticResource BoolToYesNoConverter}}"
+                                                    <TextBox Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                             IsReadOnly="{Binding IsEditing, Converter={StaticResource InverseBoolConverter}}"
                                                              HorizontalAlignment="Stretch"
                                                              VerticalAlignment="Center"
                                                              BorderThickness="0"
                                                              Padding="2"
-                                                             IsReadOnly="True"
                                                              Background="Transparent"/>
                                                 </Grid>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+
+                                    <!-- Роль UserIdRole -->
+                                    <DataGridTemplateColumn Header="Роль"
+                                                            SortMemberPath="UserIdRole">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ComboBox ItemsSource="{Binding DataContext.Roles, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                          SelectedValue="{Binding UserIdRole, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          SelectedValuePath="IdRole"
+                                                          DisplayMemberPath="NameRole"
+                                                          IsEnabled="{Binding IsEditing}" 
+                                                          VerticalAlignment="Center"
+                                                          Padding="3"
+                                                          BorderThickness="0"
+                                                          Background="Transparent"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+
+                                    <!-- Кнопочка -->
+                                    <DataGridTemplateColumn Width="*">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Button Content="Принять изменения" Width="130px" Height="20px" Margin="10, 0, 0, 0"
+                                                            Click="btnConfirmUser"
+                                                            Visibility="{Binding IsEditing, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    </Button>
+                                                </StackPanel>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
@@ -309,10 +419,9 @@
                         </Grid>
                     </Grid>
                 </TabItem>
-                
-                
-                
             </TabControl>
+            
+            <!-- Текущий пользователь -->
             <TextBlock Text="??user??" Name="userInfo"
                        HorizontalAlignment="Right" VerticalAlignment="Bottom"
                        Margin="0 0 15 10"/>

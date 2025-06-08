@@ -41,7 +41,6 @@ namespace Главное_окно.StudentModel
             //!!!!!!!!!!!!!! Если останется время - сделать уведомление об отсутсвии учителя
             if (MainWindow.curTeacher != null) // Учитель
             {
-
                 var students = context.Students
                     .Where(s => s.StudentIdClass == MainWindow.curTeacher.TeacherIdClass)
                     .OrderBy(s => s.IdStudent) // сортировка по ID по умолчанию
@@ -51,7 +50,7 @@ namespace Главное_окно.StudentModel
                     Students.Add(student);
             }
             //mmm govnokod
-            else // Админ
+            else if (MainWindow.curUser.UserIdRole == 1)// Админ
             {
                 var students = context.Students
                     .OrderBy(s => s.IdStudent) // сортировка по ID по умолчанию
@@ -93,6 +92,17 @@ namespace Главное_окно.StudentModel
                 context.Students.Update(SelectedStudent);
                 context.SaveChanges();
             }
+        }
+        
+        // Для комбобоксов Классов
+        public ObservableCollection<SchoolClass> AllClasses { get; set; } = new();
+
+        public void LoadClasses()
+        {
+            using var context = new School12Context();
+            AllClasses.Clear();
+            foreach (var cls in context.SchoolClasses)
+                AllClasses.Add(cls);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

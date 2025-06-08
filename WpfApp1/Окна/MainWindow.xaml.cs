@@ -9,6 +9,7 @@ using System.Windows.Input;
 using Главное_окно;
 using Главное_окно.DiseaseModel;
 using Главное_окно.StudentModel;
+using Главное_окно.UserModel;
 
 
 namespace WpfApp1
@@ -21,12 +22,22 @@ namespace WpfApp1
         {
             InitializeComponent();
             OpenAuthWindow();
+            
+
+            // Прячем непотребства
+            if (curUser.UserIdRole != 1)
+            {
+                UserTab.Visibility = Visibility.Hidden;
+            }
         }
 
         private void UpdateTables(object sender, SelectionChangedEventArgs e)
         {
+            ((StudentViewModel)StudentGrid.DataContext).LoadClasses();
             ((StudentViewModel)StudentGrid.DataContext).LoadStudents();
             ((DiseaseViewModel)DiseaseGrid.DataContext).LoadDiseases();
+            ((UserViewModel)UserGrid.DataContext).LoadRoles();
+            ((UserViewModel)UserGrid.DataContext).LoadUsers();
         }
 
         //
@@ -51,13 +62,14 @@ namespace WpfApp1
             else
                 Close();
         }
-
+        
+        private StudentViewModel ViewModelStudent => (StudentViewModel)StudentGrid.DataContext;
+        private DiseaseViewModel ViewModelDisease => (DiseaseViewModel)DiseaseGrid.DataContext;
+        private UserViewModel ViewModelUser => (UserViewModel)UserGrid.DataContext;
+        
         //
         // Таблица "Students"
         //
-        private StudentViewModel ViewModelStudent => (StudentViewModel)StudentGrid.DataContext;
-        private DiseaseViewModel ViewModelDisease => (DiseaseViewModel)DiseaseGrid.DataContext;
-
         private void btnAddStudent(object sender, RoutedEventArgs e)
         {
             ViewModelStudent.AddStudent();
@@ -94,7 +106,7 @@ namespace WpfApp1
             }
         }
 
-        //Интерфейс для работы с таблицей заболеваемости
+        // Модальное окно для добавления заболеваний //
 
         private void OpenDiseaseWindow(string fname, string lname, string sname, long id)
         {
@@ -107,8 +119,6 @@ namespace WpfApp1
             }
             
         }
-
-        // Модальное окно для добавления заболеваний
 
         private void btnAddDisease(object sender, RoutedEventArgs e)
         {
@@ -149,5 +159,49 @@ namespace WpfApp1
         {
             ViewModelDisease.DeleteSelectedDisease();
         }
+
+        //
+        // Таблица Пользователей
+        //
+
+        private void btnAddUser(object sender, RoutedEventArgs e)
+        {
+            ViewModelUser.AddUser();
+        }
+
+        private void btnRemoveUser(object sender, RoutedEventArgs e)
+        {
+            ViewModelUser.DeleteSelectedUser();
+            UpdateTables(null, null);
+        }
+
+        private void btnEditUser(object sender, RoutedEventArgs e)
+        {
+            if (ViewModelUser.SelectedUser != null)
+            {
+                // Включаем только у выбранного
+                ViewModelUser.SelectedUser.IsEditing = true;
+            }
+        }
+
+        private void btnConfirmUser(object sender, RoutedEventArgs e)
+        {
+            UsersGrid.CommitEdit(DataGridEditingUnit.Cell, true);
+            UsersGrid.CommitEdit(DataGridEditingUnit.Row, true);
+
+            if (ViewModelUser.SelectedUser != null)
+            {
+                ViewModelUser.SaveEditedUser();
+                ViewModelUser.SelectedUser.IsEditing = false;
+            }
+        }
+
+
+        
+
     }
+
+    //
+    // Таблица Учителей
+    //
 }

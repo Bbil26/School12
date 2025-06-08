@@ -120,7 +120,7 @@ public partial class School12Context : DbContext
 
             entity.ToTable("user_data", "school12");
 
-            entity.Property(e => e.IdUser).HasColumnName("id_user");
+            entity.Property(e => e.IdUser).HasColumnName("id_user").UseIdentityColumn();
             entity.Property(e => e.Login).HasColumnName("login");
             entity.Property(e => e.Password).HasColumnName("password");
             entity.Property(e => e.UserIdRole).HasColumnName("user_id_role");

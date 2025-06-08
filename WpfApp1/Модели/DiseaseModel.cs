@@ -53,11 +53,20 @@ namespace Главное_окно.DiseaseModel
             using var context = new School12Context();
 
             //!!!!!!!!!!!!!! Если останется время - сделать уведомление об отсутсвии учителя
-            if (MainWindow.curTeacher != null) //Учитель
+            if (MainWindow.curTeacher != null && MainWindow.curUser.UserIdRole == 2) //Учитель
             {
                 var diseases = context.Diseases
-                    .Where(d => 
+                    .Where(d =>
                         (context.Students.First(s => s.IdStudent == d.DiseaseIdStudent)).StudentIdClass == MainWindow.curTeacher.TeacherIdClass)
+                    .OrderBy(d => d.IdDisease) // сортировка по ID по умолчанию
+                    .ToList();
+                Diseases.Clear();
+                foreach (var disease in diseases)
+                    Diseases.Add(disease);
+            }
+            else if (MainWindow.curUser.UserIdRole == 1)
+            {
+                var diseases = context.Diseases
                     .OrderBy(d => d.IdDisease) // сортировка по ID по умолчанию
                     .ToList();
                 Diseases.Clear();

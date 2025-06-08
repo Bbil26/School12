@@ -60,7 +60,6 @@
                      Name="idBox"
                      Width="80" Height="19"
                      IsReadOnly="True"
-                     TextAlignment="Center"
                      VerticalAlignment="Top"
                      HorizontalAlignment="Left"/>
             
