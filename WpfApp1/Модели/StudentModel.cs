@@ -101,6 +101,7 @@ namespace Главное_окно.StudentModel
         {
             using var context = new School12Context();
             AllClasses.Clear();
+            AllClasses.Add(null);
             foreach (var cls in context.SchoolClasses)
                 AllClasses.Add(cls);
         }

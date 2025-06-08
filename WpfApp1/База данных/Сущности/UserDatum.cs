@@ -21,6 +21,9 @@ public partial class UserDatum : INotifyPropertyChanged
     public virtual Role? UserIdRoleNavigation { get; set; }
 
     [NotMapped]
+    public string DisplayName => $"ID:{IdUser} - {Login}";
+
+    [NotMapped]
     private bool _isEditing;
 
     [NotMapped]

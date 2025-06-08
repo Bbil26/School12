@@ -9,6 +9,7 @@ using System.Windows.Input;
 using Главное_окно;
 using Главное_окно.DiseaseModel;
 using Главное_окно.StudentModel;
+using Главное_окно.TeacherModel;
 using Главное_окно.UserModel;
 
 
@@ -38,6 +39,9 @@ namespace WpfApp1
             ((DiseaseViewModel)DiseaseGrid.DataContext).LoadDiseases();
             ((UserViewModel)UserGrid.DataContext).LoadRoles();
             ((UserViewModel)UserGrid.DataContext).LoadUsers();
+            ((TeacherViewModel)TeacherGrid.DataContext).LoadClasses();
+            ((TeacherViewModel)TeacherGrid.DataContext).LoadUsers();
+            ((TeacherViewModel)TeacherGrid.DataContext).LoadTeacher();
         }
 
         //
@@ -66,6 +70,7 @@ namespace WpfApp1
         private StudentViewModel ViewModelStudent => (StudentViewModel)StudentGrid.DataContext;
         private DiseaseViewModel ViewModelDisease => (DiseaseViewModel)DiseaseGrid.DataContext;
         private UserViewModel ViewModelUser => (UserViewModel)UserGrid.DataContext;
+        private TeacherViewModel ViewModelTeacher => (TeacherViewModel)TeacherGrid.DataContext;
         
         //
         // Таблица "Students"
@@ -197,11 +202,42 @@ namespace WpfApp1
         }
 
 
-        
+        //
+        // Таблица Учителей
+        //
+
+        private void btnAddTeacher(object sender, RoutedEventArgs e)
+        {
+            ViewModelTeacher.AddTeacher();
+        }
+
+        private void btnRemoveTeacher(object sender, RoutedEventArgs e)
+        {
+            ViewModelTeacher.DeleteSelectedTeacher();
+            UpdateTables(null, null);
+        }
+
+        private void btnEditTeacher(object sender, RoutedEventArgs e)
+        {
+            if (ViewModelTeacher.SelectedTeacher != null)
+            {
+                // Включаем только у выбранного
+                ViewModelTeacher.SelectedTeacher.IsEditing = true;
+            }
+        }
+
+        private void btnConfirmTeacher(object sender, RoutedEventArgs e)
+        {
+            TeachersGrid.CommitEdit(DataGridEditingUnit.Cell, true);
+            TeachersGrid.CommitEdit(DataGridEditingUnit.Row, true);
+
+            if (ViewModelTeacher.SelectedTeacher != null)
+            {
+                ViewModelTeacher.SaveEditedTeacher();
+                ViewModelTeacher.SelectedTeacher.IsEditing = false;
+            }
+        }
 
     }
 
-    //
-    // Таблица Учителей
-    //
 }

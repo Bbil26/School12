@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using WpfApp1;
 
@@ -55,6 +56,22 @@ namespace Главное_окно.UserModel
                 if (MessageBox.Show("Удалить запись?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
                     using var context = new School12Context();
+                    var teacherToRemoveId = context.Teachers
+                        .Where(t => t.TeacherIdUser == SelectedUser.IdUser)
+                        .ToList();
+                    if (teacherToRemoveId.Any())
+                    {
+                        if (MessageBox.Show("Выбранный пользователь уже присвоен, продолжить удаление?", "Подтверждение", 
+                            MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                        {
+                            teacherToRemoveId.First().TeacherIdUser = null;
+                            context.SaveChanges();
+                        }
+                        else
+                            return;
+                        
+                    }
+
                     context.UserData.Remove(SelectedUser);
                     context.SaveChanges();
                     UserData.Remove(SelectedUser);
@@ -79,6 +96,7 @@ namespace Главное_окно.UserModel
         {
             using var context = new School12Context();
             Roles.Clear();
+            Roles.Add(null);
             foreach (var role in context.Roles)
                 Roles.Add(role);
         }
