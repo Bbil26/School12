@@ -12,60 +12,269 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="470" Width="800"
         MinHeight="260" MinWidth="400"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Background="#1e1e1e"
+        Foreground="White">
+
     <Window.Resources>
         <bo:BoolToYesNoConverter x:Key="BoolToYesNoConverter" />
         <bo:InverseBoolConverter x:Key="InverseBoolConverter"/>
         <bo:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
-        
+
+        <!-- Общий стиль для текста -->
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <!-- Стиль для кнопок -->
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#0068AA"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderBrush" Value="#444"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="5,2"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль для текстовых полей -->
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="#2d2d30"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#444"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="4"/>
+        </Style>
+
+        <!-- Стиль для комбобоксов -->
+        <Style TargetType="ComboBox">
+            <Setter Property="Background" Value="#2d2d30"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#444"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="4"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ContentPresenter Name="ContentSite"
+                                      IsHitTestVisible="False"
+                                      Content="{TemplateBinding SelectionBoxItem}"
+                                      ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                      ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                      Margin="5,3,35,3"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Left"/>
+                            <ToggleButton Name="ToggleButton"
+                                  Focusable="false"
+                                  Grid.Column="0"
+                                  IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                  ClickMode="Press"
+                                  HorizontalAlignment="Right"
+                                  VerticalAlignment="Stretch"
+                                  Width="30"
+                                  Background="{TemplateBinding Background}"
+                                  BorderBrush="{TemplateBinding BorderBrush}"
+                                  BorderThickness="0">
+                                <Grid>
+                                    <Path x:Name="Arrow"
+                                  Data="M 0 0 L 4 4 L 8 0 Z"
+                                  Fill="White"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+                                </Grid>
+                            </ToggleButton>
+                            <Popup Name="Popup"
+                           Placement="Bottom"
+                           IsOpen="{TemplateBinding IsDropDownOpen}"
+                           AllowsTransparency="True"
+                           Focusable="False"
+                           PopupAnimation="Slide">
+                                <Grid Name="DropDown"
+                              SnapsToDevicePixels="True"
+                              MinWidth="{TemplateBinding ActualWidth}"
+                              MaxHeight="200"
+                              Background="#2d2d30">
+                                    <Border BorderThickness="1" BorderBrush="#444" Background="#2d2d30"/>
+                                    <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True" Background="#2d2d30"/>
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="Gray"/>
+                                <Setter Property="Background" Value="#1a1a1a"/>
+                                <Setter TargetName="Arrow" Property="Fill" Value="Gray"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ToggleButton" Property="BorderBrush" Value="#007acc"/>
+                                <Setter TargetName="Arrow" Property="Fill" Value="#007acc"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль для DataGrid -->
+        <Style TargetType="DataGrid">
+            <Setter Property="Background" Value="#252526"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#444"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="RowBackground" Value="#252526"/>
+            <Setter Property="AlternatingRowBackground" Value="#1e1e1e"/>
+            <Setter Property="GridLinesVisibility" Value="None"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#444"/>
+            <Setter Property="VerticalGridLinesBrush" Value="#444"/>
+        </Style>
+
+        <!-- Стиль для заголовков DataGrid -->
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#333333"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#444"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="10,5"/>
+        </Style>
+
+        <!-- Стиль для ячеек DataGrid -->
+        <Style TargetType="DataGridCell">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#444"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#0068AA"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Стиль для TabControl -->
+        <Style TargetType="TabControl">
+            <Setter Property="Background" Value="#252526"/>
+            <Setter Property="BorderBrush" Value="#444"/>
+        </Style>
+
+        <!-- Стиль для TabItem -->
+        <Style TargetType="TabItem">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Background" Value="#333333"/>
+            <Setter Property="BorderBrush" Value="#444"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border Name="Border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="3,3,0,0"
+                        Padding="{TemplateBinding Padding}">
+                            <ContentPresenter x:Name="ContentSite"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Center"
+                                      ContentSource="Header"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#1E1E1E"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#0068AA"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#3A3D41"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="Gray"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <!-- Стиль для Menu -->
+        <Style TargetType="Menu">
+            <Setter Property="Background" Value="#252526"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <!-- Стиль для MenuItem -->
+        <Style TargetType="MenuItem">
+            <Setter Property="Background" Value="#252526"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#444"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#aa9999"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
         <!-- Общий стиль для выравнивания содержимого ячеек по центру по вертикали -->
         <Style x:Key="CenterVerticalTextBlockStyle" TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Padding" Value="5,0,0,0"/>
+            <Setter Property="Foreground" Value="White"/>
         </Style>
-
     </Window.Resources>
-    
-    <Grid>
+
+    <Grid Background="#1e1e1e">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Menu>
-                <MenuItem Header="Отчет">
-                    <MenuItem Header="Создать отчет" 
-                              Click="btnCreateReport"></MenuItem>
+                <MenuItem Header="Отчет" Padding="5 2 5 2">
+                    <MenuItem Header="Создать отчет"
+                              Click="btnCreateReport"/>
                 </MenuItem>
             </Menu>
         </Grid>
         <Grid Grid.Row="1">
-            
-            <!-- Вкладка учеников -->
-            <!-- Вкладка учеников -->
             <!-- Вкладка учеников -->
             <TabControl>
                 <TabItem Header="Ученики">
-                    <Grid Background="#FFE5E5E5" Name="StudentGrid">
-
+                    <Grid Background="#1e1e1e" Name="StudentGrid">
                         <Grid.DataContext>
                             <vm:StudentViewModel />
                         </Grid.DataContext>
-
                         <Grid Margin="10">
-
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="32"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-
                             <!-- Панель кнопок -->
                             <Grid Margin="0 0 0 10">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-
                                 <!-- Кнопочки -->
                                 <StackPanel Orientation="Horizontal" Grid.Column="0">
                                     <Button Content="Добавить" Click="btnAddStudent" Width="70"/>
@@ -75,7 +284,6 @@
                                 <Button Content="Добавить болезнь" Click="btnAddDisease"
                                 Grid.Column="1" Width="115"  HorizontalAlignment="Right"/>
                             </Grid>
-
                             <!-- Таблица студентов -->
                             <DataGrid Grid.Row="1"
                                       ItemsSource="{Binding Students}"
@@ -94,10 +302,10 @@
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="HorizontalAlignment" Value="Center"/>
                                                 <Setter Property="VerticalAlignment" Value="Center"/>
+                                                <Setter Property="Foreground" Value="White"/>
                                             </Style>
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
-
                                     <!-- Фамилия FirstName -->
                                     <DataGridTemplateColumn Header="Фамилия" 
                                                             SortMemberPath="FirstName">
@@ -116,7 +324,6 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-
                                     <!-- Имя SecondName -->
                                     <DataGridTemplateColumn Header="Имя"
                                                             SortMemberPath="SecondName">
@@ -134,7 +341,6 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-
                                     <!-- Отчество Surname -->
                                     <DataGridTemplateColumn Header="Отчество"
                                                             SortMemberPath="Surname">
@@ -152,7 +358,6 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-
                                     <!-- Год рождения YearOfBirth -->
                                     <DataGridTemplateColumn Header="Год рождения"
                                                             SortMemberPath="YearOfBirth">
@@ -170,7 +375,6 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-
                                     <!-- Класс -->
                                     <DataGridTemplateColumn Header="Класс" 
                                                             SortMemberPath="StudentIdClass">
@@ -184,12 +388,10 @@
                                                           VerticalAlignment="Center"
                                                           BorderThickness="0"
                                                           Background="Transparent"
-                                                          Padding="2"
-                                                          />
+                                                          Padding="2"/>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-
                                     <!-- Кнопочка -->
                                     <DataGridTemplateColumn Width="*">
                                         <DataGridTemplateColumn.CellTemplate>
@@ -208,39 +410,30 @@
                         </Grid>
                     </Grid>
                 </TabItem>
-                
-                <!-- Вкладка Болезней -->
-                <!-- Вкладка Болезней -->
+
                 <!-- Вкладка Болезней -->
                 <TabItem Header="Отметка заболеваний">
-                    <Grid Background="#FFE5E5E5" Name="DiseaseGrid">
-
+                    <Grid Background="#1e1e1e" Name="DiseaseGrid">
                         <Grid.DataContext>
                             <dm:DiseaseViewModel />
                         </Grid.DataContext>
-
                         <Grid Margin="10">
-
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="32"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-
                             <!-- Панель кнопок -->
                             <Grid Margin="0 0 0 10">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-
                                 <!-- Кнопочки -->
                                 <StackPanel Orientation="Horizontal" Grid.Column="0">
                                     <Button Content="Удалить" Click="btnRemoveDisease" Width="60"/>
                                     <Button Content="Редактировать" Click="btnEditDisease" Margin="5 0 0 0" Width="95"/>
                                 </StackPanel>
-
                             </Grid>
-
                             <!-- Таблица болезней -->
                             <DataGrid Grid.Row="1"
                                       HeadersVisibility="Column"
@@ -251,7 +444,6 @@
                                       MinRowHeight="24"
                                       IsReadOnly="True">
                                 <DataGrid.Columns>
-
                                     <!-- ID -->
                                     <DataGridTextColumn Header="ID" 
                                     Binding="{Binding IdDisease}"
@@ -260,10 +452,10 @@
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="HorizontalAlignment" Value="Center"/>
                                                 <Setter Property="VerticalAlignment" Value="Center"/>
+                                                <Setter Property="Foreground" Value="White"/>
                                             </Style>
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
-
                                     <!-- Описание болезни DescriptionDisease -->
                                     <DataGridTextColumn Header="Описание болезни"
                                                         MaxWidth="250"
@@ -275,20 +467,17 @@
                                                         Binding="{Binding DateDisease, StringFormat=d, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"     
                                                         IsReadOnly="True"
                                                         ElementStyle="{StaticResource CenterVerticalTextBlockStyle}"/>
-
                                     <!-- ID отсутствующего ученика DiseaseIdStudent -->
                                     <DataGridTextColumn Header="ID отсутствующего ученика"
                                                         Binding="{Binding DiseaseIdStudent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         IsReadOnly="True"
                                                         ElementStyle="{StaticResource CenterVerticalTextBlockStyle}"/>
-                                    
                                     <!-- Тяжесть болезни HardDisease -->
                                     <DataGridTextColumn Header="Тяжесть болезни"
                                                         Binding="{Binding HardDisease, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
                                                                     Converter={StaticResource BoolToYesNoConverter}}" 
                                                         IsReadOnly="True" 
                                                         ElementStyle="{StaticResource CenterVerticalTextBlockStyle}"/>
-
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Grid>
@@ -296,29 +485,22 @@
                 </TabItem>
 
                 <!-- Вкладка Пользователей -->
-                <!-- Вкладка Пользователей -->
-                <!-- Вкладка Пользователей -->
                 <TabItem Header="Пользователи" Name="UserTab">
-                    <Grid Background="#FFE5E5E5" Name="UserGrid">
-
+                    <Grid Background="#1e1e1e" Name="UserGrid">
                         <Grid.DataContext>
                             <um:UserViewModel/>
                         </Grid.DataContext>
-
                         <Grid Margin="10">
-
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="32"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-
                             <!-- Панель кнопок -->
                             <Grid Margin="0 0 0 10">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-
                                 <!-- Кнопочки -->
                                 <StackPanel Orientation="Horizontal" Grid.Column="0">
                                     <Button Content="Добавить" Click="btnAddUser" Width="70"/>
@@ -326,7 +508,6 @@
                                     <Button Content="Редактировать" Click="btnEditUser" Margin="5 0 0 0" Width="95"/>
                                 </StackPanel>
                             </Grid>
-
                             <!-- Таблица Пользователей -->
                             <DataGrid Grid.Row="1"
                                       HeadersVisibility="Column"
@@ -345,10 +526,10 @@
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="HorizontalAlignment" Value="Center"/>
                                                 <Setter Property="VerticalAlignment" Value="Center"/>
+                                                <Setter Property="Foreground" Value="White"/>
                                             </Style>
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
-
                                     <!-- Логин Login -->
                                     <DataGridTemplateColumn Header="Логин"
                                                             SortMemberPath="Login">
@@ -366,7 +547,6 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-
                                     <!-- Пароль Password -->
                                     <DataGridTemplateColumn Header="Пароль"
                                                             SortMemberPath="Password">
@@ -384,7 +564,6 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-
                                     <!-- Роль UserIdRole -->
                                     <DataGridTemplateColumn Header="Роль"
                                                             SortMemberPath="UserIdRole">
@@ -402,7 +581,6 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-
                                     <!-- Кнопочка -->
                                     <DataGridTemplateColumn Width="*">
                                         <DataGridTemplateColumn.CellTemplate>
@@ -423,38 +601,29 @@
                 </TabItem>
 
                 <!-- Таблица Учителя -->
-                <!-- Таблица Учителя -->
-                <!-- Таблица Учителя -->
                 <TabItem Header="Учителя" Name="TeacherTab">
-                    <Grid Background="#FFE5E5E5" Name="TeacherGrid">
-
+                    <Grid Background="#1e1e1e" Name="TeacherGrid">
                         <Grid.DataContext>
                             <tm:TeacherViewModel/>
                         </Grid.DataContext>
-
                         <Grid Margin="10">
-
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="32"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-
                             <!-- Панель кнопок -->
                             <Grid Margin="0 0 0 10">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-
                                 <!-- Кнопочки -->
                                 <StackPanel Orientation="Horizontal" Grid.Column="0">
                                     <Button Content="Добавить" Click="btnAddTeacher" Width="70"/>
                                     <Button Content="Удалить" Click="btnRemoveTeacher" Margin="5 0 0 0" Width="60"/>
                                     <Button Content="Редактировать" Click="btnEditTeacher" Margin="5 0 0 0" Width="95"/>
                                 </StackPanel>
-                            
                             </Grid>
-
                             <!-- Таблица студентов -->
                             <DataGrid Grid.Row="1"
                                       ItemsSource="{Binding Teachers}"
@@ -465,7 +634,6 @@
                                       Margin="0 0 0 15"
                                       x:Name="TeachersGrid">
                                 <DataGrid.Columns>
-                                    
                                     <!-- ID -->
                                     <DataGridTextColumn Header="ID" 
                                             Binding="{Binding IdTeacher}"     
@@ -474,10 +642,10 @@
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="HorizontalAlignment" Value="Center"/>
                                                 <Setter Property="VerticalAlignment" Value="Center"/>
+                                                <Setter Property="Foreground" Value="White"/>
                                             </Style>
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
-
                                     <!-- Фамилия FirstName -->
                                     <DataGridTemplateColumn Header="Фамилия" 
                                                 SortMemberPath="FirstName">
@@ -496,7 +664,6 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-
                                     <!-- Имя SecondName -->
                                     <DataGridTemplateColumn Header="Имя"
                                                 SortMemberPath="SecondName">
@@ -514,7 +681,6 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-
                                     <!-- Отчество Surname -->
                                     <DataGridTemplateColumn Header="Отчество"
                                                 SortMemberPath="Surname">
@@ -532,7 +698,6 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-
                                     <!-- Год рождения YearOfBirth -->
                                     <DataGridTemplateColumn Header="Год рождения"
                                                 SortMemberPath="YearOfBirth">
@@ -545,12 +710,11 @@
                                                              VerticalAlignment="Center"
                                                              BorderThickness="0"
                                                              Padding="2"
-                                                             Background="Transparent"/> 
+                                                             Background="Transparent"/>
                                                 </Grid>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-
                                     <!-- Класс TeacherIdClass -->
                                     <DataGridTemplateColumn Header="Класс" 
                                                 SortMemberPath="TeacherIdClass">
@@ -564,12 +728,10 @@
                                                           VerticalAlignment="Center"
                                                           BorderThickness="0"
                                                           Background="Transparent"
-                                                          Padding="2"
-                                                          />
+                                                          Padding="2"/>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-
                                     <!-- Пользователь TeacherIdUser -->
                                     <DataGridTemplateColumn Header="Пользователь" 
                                                             SortMemberPath="TeacherIdUser">
@@ -583,12 +745,10 @@
                                                           VerticalAlignment="Center"
                                                           BorderThickness="0"
                                                           Background="Transparent"
-                                                          Padding="2"
-                                                          />
+                                                          Padding="2"/>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-
                                     <!-- Кнопочка -->
                                     <DataGridTemplateColumn Width="*">
                                         <DataGridTemplateColumn.CellTemplate>

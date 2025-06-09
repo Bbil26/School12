@@ -6,9 +6,77 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Главное_окно"
         mc:Ignorable="d"
-        Title="Добавление записи о заболевании" Height="375" Width="500"
+        Title="Добавление записи о заболевании"
+        Height="380" Width="500"
         ResizeMode="NoResize"
-        WindowStartupLocation="CenterOwner">
+        WindowStartupLocation="CenterOwner"
+        Background="#1E1E1E"
+        Foreground="White">
+
+    <Window.Resources>
+        <!-- Тёмные стили -->
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="#2D2D30"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#555"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+        <Style TargetType="DatePicker">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#252526"/>
+            <Setter Property="BorderBrush" Value="#444"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="2"/>
+        </Style>
+        <!-- Стиль для DatePickerTextBox -->
+        <Style TargetType="DatePickerTextBox">
+            <Setter Property="Background" Value="#1E1E1E"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#444"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="5,2"/>
+        </Style>
+
+        <!-- Стиль для Button внутри DatePicker -->
+        <Style TargetType="Button" x:Key="DatePickerButtonStyle">
+            <Setter Property="Background" Value="#2D2D30"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#444"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="3"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#3A3D41"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#0068AA"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Padding" Value="5,2"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+    </Window.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions >
             <ColumnDefinition Width="50"/>
@@ -17,16 +85,15 @@
             <ColumnDefinition Width="50"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="55" />
-            <RowDefinition/>
-            <RowDefinition Height="35"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
 
         <!-- Заголовок -->
         <StackPanel Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1">
-            <TextBlock Text="Добавление заболевания для записи:" 
-                       HorizontalAlignment="Center" Name="titleWindow"/>
+            <TextBlock Text="Добавление заболевания для записи:" HorizontalAlignment="Center" Name="titleWindow"/>
             <TextBlock HorizontalAlignment="Center">
                 <TextBlock.Text>
                     <MultiBinding StringFormat="id: {3}  - {0} {1} {2}">
@@ -40,7 +107,7 @@
             <TextBlock x:Name="test"/>
         </StackPanel>
 
-        <!-- Тело "таблички" -->
+        <!-- Основная форма -->
         <Grid Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -48,45 +115,37 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition/>
-                <RowDefinition />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition />
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <!-- ID ученика -->
-            <TextBlock Text="ID ученика" Grid.Row="0" Grid.Column="0" />
-            <TextBox Grid.Row="0" Grid.Column="1" 
-                     Name="idBox"
-                     Width="80" Height="19"
+            <TextBlock Text="ID ученика" Grid.Row="0" Grid.Column="0"/>
+            <TextBox Grid.Row="0" Grid.Column="1" Name="idBox"
+                     Width="80" Height="24"
                      IsReadOnly="True"
                      VerticalAlignment="Top"
                      HorizontalAlignment="Left"/>
-            
-            <!-- Описание болезни -->
-            <TextBlock Text="Описание болезни" Grid.Row="1" Margin="0 0 12 0"/>
-            <TextBox Grid.Column="1" Name="description"
-             AcceptsReturn="True" Grid.Row="1"
-             TextWrapping="Wrap"
-             VerticalScrollBarVisibility="Auto"/>
 
-            <!-- Тяжелая болезнь -->
-            <TextBlock Text="Тяжелая болезнь" Grid.Row="2" Margin="0 20 0 20"/>
-            <CheckBox Content="Да" Grid.Row="2" Grid.Column="1"
-                      VerticalAlignment="Center" Name="hardDisease"/>
+            <TextBlock Text="Описание болезни" Grid.Row="1" Grid.Column="0"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Name="description"
+                     AcceptsReturn="True"
+                     TextWrapping="Wrap"
+                     VerticalScrollBarVisibility="Auto"
+                     Height="80"/>
 
-            <!-- Выбрать дату -->
+            <TextBlock Text="Тяжелая болезнь" Grid.Row="2" Grid.Column="0"/>
+            <CheckBox Content="Да" Grid.Row="2" Grid.Column="1" Name="hardDisease"/>
+
             <TextBlock Text="Выбрать дату" Grid.Row="3" Grid.Column="0"/>
-            <DatePicker Grid.Row="3" Grid.Column="1" Height="26" Name="dateDisease"
-                        SelectedDate="{x:Static sys:DateTime.Now}"/>
+            <DatePicker Grid.Row="3" Grid.Column="1" Height="30" Name="dateDisease"
+                        SelectedDate="{x:Static sys:DateTime.Now}" Width="175" HorizontalAlignment="Left"/>
 
-            <!-- Добавить запись -->
-            <Button Content="Добавить запись" Margin="0 20 0 0"
-                    Grid.Row="4" Grid.ColumnSpan="2"
-                    Name="btnDis"
-                    Height="26" Width="120"
+            <Button Content="Добавить запись" Grid.Row="4" Grid.ColumnSpan="2"
+                    Name="btnDis" Height="30" Width="140"
+                    HorizontalAlignment="Center"
                     Click="BtnDisease"/>
         </Grid>
-        
     </Grid>
 </Window>

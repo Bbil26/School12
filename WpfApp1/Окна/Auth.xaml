@@ -6,44 +6,59 @@
         xmlns:local="clr-namespace:Главное_окно"
         mc:Ignorable="d"
         Title="Авторизация" Height="270" Width="500"
-        Background="#ccc" ResizeMode="NoResize"
+        Background="#1e1e1e" ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="70"/>
-            <ColumnDefinition Width="185px"/>
+            <ColumnDefinition Width="185"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition/>
-            <RowDefinition Height="30px"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="25px"/>
+            <RowDefinition Height="25"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Label Name="l_login" Content="Логин" FontSize="16px" Foreground="#222" FontWeight="Medium"
+        <!-- Метки -->
+        <Label Name="l_login" Content="Логин" FontSize="16"
+               Foreground="White" FontWeight="Medium"
                Grid.Column="1" Grid.Row="2"/>
-        <Label Name="l_password" Content="Пароль" FontSize="16px" Foreground="#222" FontWeight="Medium"
+
+        <Label Name="l_password" Content="Пароль" FontSize="16"
+               Foreground="White" FontWeight="Medium"
                Grid.Column="1" Grid.Row="3"/>
 
-        <TextBox Name="login" Grid.Row="2" Grid.Column="2" Height="25px" 
-                 FontSize="15px" VerticalContentAlignment="Center" Loaded="loginTextBox_Loaded"/>
-        <PasswordBox Name="password" Grid.Row="3" Grid.Column="2" Height="25px" 
-                     FontSize="15px" VerticalContentAlignment="Center"/>
-        
+        <!-- Поля -->
+        <TextBox Name="login" Grid.Row="2" Grid.Column="2" Height="25"
+                 FontSize="15" Background="#2d2d30" Foreground="White"
+                 BorderBrush="#444" BorderThickness="1"
+                 VerticalContentAlignment="Center"
+                 Loaded="loginTextBox_Loaded"/>
+
+        <PasswordBox Name="password" Grid.Row="3" Grid.Column="2" Height="25"
+                     FontSize="15" Background="#2d2d30" Foreground="White"
+                     BorderBrush="#444" BorderThickness="1"
+                     VerticalContentAlignment="Center"/>
+
+        <!-- Кнопка -->
         <Button Name="btnAuth" Content="Войти" FontWeight="Medium"
-                Grid.ColumnSpan="2" Grid.Row="4" Grid.Column="1" Width="100px" 
-                Height="30px" Click="btnAuth_Click" IsDefault="True" Loaded="AfterLoadBtn"/>
+                Grid.ColumnSpan="2" Grid.Row="4" Grid.Column="1" Width="100"
+                Height="30" Click="btnAuth_Click" IsDefault="True"
+                Loaded="AfterLoadBtn"
+                Background="#0068AA" Foreground="White"
+                BorderThickness="0" Cursor="Hand"/>
 
+        <!-- Ошибка -->
         <Label Name="errorAuth" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2"
-               Content="Не правильный логин или пароль" Foreground="#f44" 
-               HorizontalAlignment="Center" FontSize="11px" FontWeight="Medium"
+               Content="Неправильный логин или пароль" Foreground="#f44"
+               HorizontalAlignment="Center" FontSize="11" FontWeight="Medium"
                Visibility="Hidden"/>
-
     </Grid>
 </Window>

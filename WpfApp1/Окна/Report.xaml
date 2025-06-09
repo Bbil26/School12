@@ -8,10 +8,174 @@
         xmlns:res="clr-namespace:Главное_окно.Ресурсы_для_булинговой_логики"
         mc:Ignorable="d"
         Title="Создание отчета" Height="390" Width="520"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        Background="#1e1e1e"
+        Foreground="White">
+
     <Window.Resources>
         <res:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+
+        <!-- Общий стиль для кнопок -->
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#0068AA"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderBrush" Value="#444"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="5,2"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль для текстовых полей -->
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="#2d2d30"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#444"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="4"/>
+        </Style>
+
+        <!-- Стиль для комбобоксов -->
+        <Style TargetType="ComboBox">
+            <Setter Property="Background" Value="#2d2d30"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#444"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="4"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <!-- Содержимое ComboBox -->
+                            <ContentPresenter Name="ContentSite"
+                                      IsHitTestVisible="False"
+                                      Content="{TemplateBinding SelectionBoxItem}"
+                                      ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                      ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                      Margin="5,3,35,3"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Left"/>
+                            <!-- Кнопка с треугольником -->
+                            <ToggleButton Name="ToggleButton"
+                                  Focusable="false"
+                                  Grid.Column="0"
+                                  IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                  ClickMode="Press"
+                                  HorizontalAlignment="Right"
+                                  VerticalAlignment="Stretch"
+                                  Width="30"
+                                  Background="{TemplateBinding Background}"
+                                  BorderBrush="{TemplateBinding BorderBrush}"
+                                  BorderThickness="0">
+                                <Grid>
+                                    <Path x:Name="Arrow"
+                                  Data="M 0 0 L 4 4 L 8 0 Z"
+                                  Fill="White"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+                                </Grid>
+                            </ToggleButton>
+                            <!-- Выпадающее меню -->
+                            <Popup Name="Popup"
+                           Placement="Bottom"
+                           IsOpen="{TemplateBinding IsDropDownOpen}"
+                           AllowsTransparency="True"
+                           Focusable="False"
+                           PopupAnimation="Slide">
+                                <Grid Name="DropDown"
+                              SnapsToDevicePixels="True"
+                              MinWidth="{TemplateBinding ActualWidth}"
+                              MaxHeight="200"
+                              Background="#2d2d30">
+                                    <Border BorderThickness="1" BorderBrush="#444" Background="#2d2d30"/>
+                                    <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True" Background="#2d2d30"/>
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+
+                        <!-- Триггеры -->
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="Gray"/>
+                                <Setter Property="Background" Value="#1a1a1a"/>
+                                <Setter TargetName="Arrow" Property="Fill" Value="Gray"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ToggleButton" Property="BorderBrush" Value="#007acc"/>
+                                <Setter TargetName="Arrow" Property="Fill" Value="#007acc"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <!-- Стиль для DatePicker -->
+        <Style TargetType="DatePicker">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#252526"/>
+            <Setter Property="BorderBrush" Value="#444"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="2"/>
+        </Style>
+
+        <!-- Стиль для DatePickerTextBox -->
+        <Style TargetType="DatePickerTextBox">
+            <Setter Property="Background" Value="#1E1E1E"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#444"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="5,2"/>
+        </Style>
+
+        <!-- Стиль для Button внутри DatePicker -->
+        <Style TargetType="Button" x:Key="DatePickerButtonStyle">
+            <Setter Property="Background" Value="#2D2D30"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#444"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="3"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#3A3D41"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Стиль для GroupBox -->
+        <Style TargetType="GroupBox">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#444"/>
+        </Style>
+
+        <!-- Стиль для RadioButton и TextBlock -->
+        <Style TargetType="RadioButton">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
     </Window.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="30"/>
@@ -23,6 +187,7 @@
             <RowDefinition/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
+
         <GroupBox Grid.Row="1" Grid.Column="1" Padding="20"
                   Header="Установка параметров">
             <Grid>
@@ -49,8 +214,7 @@
                            Grid.Row="1" Grid.Column="1"/>
                 <ComboBox Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right"
                           Height="24" Width="100" Padding="5" Name="CBClass"
-                          VerticalAlignment="Center" IsEnabled="False"
-                          Background="Transparent"/>
+                          VerticalAlignment="Center" IsEnabled="False"/>
 
                 <!-- Год -->
                 <TextBlock Text="Отчетный год" Margin="0 10 0 10"
@@ -64,13 +228,12 @@
                     <RadioButton Name="RB1" Content="Январь-Май" Margin="0 5 0 0"/>
                     <RadioButton Name="RB2" Content="Сентябрь-Декабрь" Margin="0 10 0 0"/>
                     <RadioButton Name="RB3" Content="Весь текущий год" Margin="0 10 0 0"/>
-                    <RadioButton Name="RB4" Content="Другая" Margin="0 10 0 10" 
-                                 />
+                    <RadioButton Name="RB4" Content="Другая" Margin="0 10 0 10"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" 
                             Visibility="{Binding IsChecked, ElementName=RB4, Converter={StaticResource BoolToVisibilityConverter}}"
-                            Grid.Row="3" Grid.Column="2" Margin="20 0 0 10" Name="datePanel"> 
+                            Grid.Row="3" Grid.Column="2" Margin="20 0 0 10" Name="datePanel">
                     <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
                         <TextBlock Text="С" Margin="0 0 20 0"/>
                         <DatePicker Name="DateStart"/>
@@ -81,10 +244,10 @@
                     </StackPanel>
                 </StackPanel>
 
-                <!-- Кнопошка -->
-                <Button Content="Создать отчет" Padding="5px" Width="200"
+                <!-- Кнопка -->
+                <Button Content="Создать отчет" Width="200"
                         Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"
-                        Margin="15" Click="btnCreate"/>
+                        Margin="15" Click="btnCreate" Height="25"/>
             </Grid>
         </GroupBox>
     </Grid>
