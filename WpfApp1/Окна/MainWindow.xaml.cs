@@ -11,6 +11,7 @@ using Главное_окно.DiseaseModel;
 using Главное_окно.StudentModel;
 using Главное_окно.TeacherModel;
 using Главное_окно.UserModel;
+using Главное_окно.Окна;
 
 
 namespace WpfApp1
@@ -23,12 +24,12 @@ namespace WpfApp1
         {
             InitializeComponent();
             OpenAuthWindow();
-            
 
             // Прячем непотребства
-            if (curUser.UserIdRole != 1)
+            if (curUser != null && curUser.UserIdRole != 1)
             {
-                UserTab.Visibility = Visibility.Hidden;
+                UserTab.Visibility = Visibility.Collapsed;
+                TeacherTab.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -50,9 +51,8 @@ namespace WpfApp1
         private void OpenAuthWindow()
         {
             Auth authWindow = new Auth();
-            bool? res = authWindow.ShowDialog();
-            
-            if (res == true)
+
+            if (authWindow.ShowDialog() == true)
             {
                 curUser = authWindow.authUser;
 
@@ -236,6 +236,23 @@ namespace WpfApp1
                 ViewModelTeacher.SaveEditedTeacher();
                 ViewModelTeacher.SelectedTeacher.IsEditing = false;
             }
+        }
+
+        //
+        // Отчет
+        //
+        private void btnCreateReport(object sender, RoutedEventArgs e)
+        {
+            Report report = new Report();
+            if (report.ShowDialog() == true)
+            {
+
+            }
+            else
+            {
+                
+            }
+
         }
 
     }

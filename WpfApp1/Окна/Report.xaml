@@ -1,0 +1,91 @@
+﻿<Window x:Class="Главное_окно.Окна.Report"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:Главное_окно.StudentModel"
+        xmlns:local="clr-namespace:Главное_окно.Окна"
+        xmlns:res="clr-namespace:Главное_окно.Ресурсы_для_булинговой_логики"
+        mc:Ignorable="d"
+        Title="Создание отчета" Height="390" Width="520"
+        ResizeMode="NoResize">
+    <Window.Resources>
+        <res:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="30"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <GroupBox Grid.Row="1" Grid.Column="1" Padding="20"
+                  Header="Установка параметров">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid.DataContext>
+                    <vm:StudentViewModel />
+                </Grid.DataContext>
+
+                <!-- Класс -->
+                <TextBlock Text="Класс" Margin="0 10 0 10"
+                           Grid.Row="1" Grid.Column="1"/>
+                <ComboBox Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right"
+                          Height="24" Width="100" Padding="5" Name="CBClass"
+                          VerticalAlignment="Center" IsEnabled="False"
+                          Background="Transparent"/>
+
+                <!-- Год -->
+                <TextBlock Text="Отчетный год" Margin="0 10 0 10"
+                           Grid.Row="2" Grid.Column="1"/>
+                <TextBox Name="TBYear" Height="24" Width="100"
+                         Grid.Row="2" Grid.Column="2" 
+                         HorizontalAlignment="Right" VerticalContentAlignment="Center"/>
+
+                <!-- Промежуток времени -->
+                <StackPanel Grid.Row="3" Grid.Column="1" Margin="0 0 0 5">
+                    <RadioButton Name="RB1" Content="Январь-Май" Margin="0 5 0 0"/>
+                    <RadioButton Name="RB2" Content="Сентябрь-Декабрь" Margin="0 10 0 0"/>
+                    <RadioButton Name="RB3" Content="Весь текущий год" Margin="0 10 0 0"/>
+                    <RadioButton Name="RB4" Content="Другая" Margin="0 10 0 10" 
+                                 />
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" 
+                            Visibility="{Binding IsChecked, ElementName=RB4, Converter={StaticResource BoolToVisibilityConverter}}"
+                            Grid.Row="3" Grid.Column="2" Margin="20 0 0 10" Name="datePanel"> 
+                    <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
+                        <TextBlock Text="С" Margin="0 0 20 0"/>
+                        <DatePicker Name="DateStart"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="По" Margin="0 0 12 0"/>
+                        <DatePicker Name="DateEnd"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Кнопошка -->
+                <Button Content="Создать отчет" Padding="5px" Width="200"
+                        Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"
+                        Margin="15" Click="btnCreate"/>
+            </Grid>
+        </GroupBox>
+    </Grid>
+</Window>

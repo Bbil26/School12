@@ -34,7 +34,8 @@
         <Grid Grid.Row="0">
             <Menu>
                 <MenuItem Header="Отчет">
-                    <MenuItem Header="Создать отчет"></MenuItem>
+                    <MenuItem Header="Создать отчет" 
+                              Click="btnCreateReport"></MenuItem>
                 </MenuItem>
             </Menu>
         </Grid>
@@ -424,7 +425,7 @@
                 <!-- Таблица Учителя -->
                 <!-- Таблица Учителя -->
                 <!-- Таблица Учителя -->
-                <TabItem Header="Учителя">
+                <TabItem Header="Учителя" Name="TeacherTab">
                     <Grid Background="#FFE5E5E5" Name="TeacherGrid">
 
                         <Grid.DataContext>

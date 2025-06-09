@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace Главное_окно;
+﻿namespace Главное_окно;
 
 public partial class SchoolClass
 {
