@@ -10,7 +10,7 @@
         xmlns:local="clr-namespace:WpfApp1"
         xmlns:bo="clr-namespace:Главное_окно.Ресурсы_для_булинговой_логики"
         mc:Ignorable="d"
-        Title="MainWindow" Height="470" Width="800"
+        Title="Учет заболеваемости" Height="470" Width="800"
         MinHeight="260" MinWidth="400"
         WindowStartupLocation="CenterScreen"
         Background="#1e1e1e"

@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Globalization;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Input;
 using Главное_окно;
 using Главное_окно.DiseaseModel;
 using Главное_окно.StudentModel;
@@ -17,7 +11,7 @@ using Главное_окно.Окна;
 namespace WpfApp1
 {
     public partial class MainWindow : Window
-    { 
+    {
         public static UserDatum? curUser;
         public static Teacher? curTeacher;
         public MainWindow()
@@ -66,12 +60,12 @@ namespace WpfApp1
             else
                 Close();
         }
-        
+
         private StudentViewModel ViewModelStudent => (StudentViewModel)StudentGrid.DataContext;
         private DiseaseViewModel ViewModelDisease => (DiseaseViewModel)DiseaseGrid.DataContext;
         private UserViewModel ViewModelUser => (UserViewModel)UserGrid.DataContext;
         private TeacherViewModel ViewModelTeacher => (TeacherViewModel)TeacherGrid.DataContext;
-        
+
         //
         // Таблица "Students"
         //
@@ -89,7 +83,7 @@ namespace WpfApp1
         private void btnEditStudent(object sender, RoutedEventArgs e)
         {
             if (ViewModelStudent.SelectedStudent != null)
-            {   
+            {
                 // Включаем только у выбранного
                 ViewModelStudent.SelectedStudent.IsEditing = true;
                 if (curUser != null && curUser.UserIdRole == 1)
@@ -122,7 +116,7 @@ namespace WpfApp1
             {
                 MessageBox.Show("Добавление болезни прошло неудачно!", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-            
+
         }
 
         private void btnAddDisease(object sender, RoutedEventArgs e)
@@ -250,7 +244,7 @@ namespace WpfApp1
             }
             else
             {
-                
+
             }
 
         }

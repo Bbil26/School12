@@ -41,6 +41,7 @@ namespace Главное_окно
         }
 
         //Отладка, ПОТОМ УДАЛИТЬ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        /*
         private void Autorun()
         {
             login.Text = "user2";
@@ -50,10 +51,10 @@ namespace Главное_окно
             Thread.Sleep(1000);
             btnAuth_Click(btnAuth, new RoutedEventArgs());
         }
-        
+        */
         private void AfterLoadBtn(object sender, RoutedEventArgs e)
         {
-            Autorun();
+            //Autorun();
         }
     }
 }
