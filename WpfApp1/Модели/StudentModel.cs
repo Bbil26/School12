@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using WpfApp1;
 
@@ -58,7 +53,7 @@ namespace Главное_окно.StudentModel
                 Students.Clear();
                 foreach (var student in students)
                     Students.Add(student);
-            } 
+            }
         }
 
         public void DeleteSelectedStudent()
@@ -93,7 +88,7 @@ namespace Главное_окно.StudentModel
                 context.SaveChanges();
             }
         }
-        
+
         // Для комбобоксов Классов
         public ObservableCollection<SchoolClass> AllClasses { get; set; } = new();
 

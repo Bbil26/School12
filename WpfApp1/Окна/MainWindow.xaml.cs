@@ -178,7 +178,6 @@ namespace WpfApp1
         {
             if (ViewModelUser.SelectedUser != null)
             {
-                // Включаем только у выбранного
                 ViewModelUser.SelectedUser.IsEditing = true;
             }
         }
@@ -194,7 +193,6 @@ namespace WpfApp1
                 ViewModelUser.SelectedUser.IsEditing = false;
             }
         }
-
 
         //
         // Таблица Учителей
@@ -215,7 +213,6 @@ namespace WpfApp1
         {
             if (ViewModelTeacher.SelectedTeacher != null)
             {
-                // Включаем только у выбранного
                 ViewModelTeacher.SelectedTeacher.IsEditing = true;
             }
         }
@@ -238,17 +235,10 @@ namespace WpfApp1
         private void btnCreateReport(object sender, RoutedEventArgs e)
         {
             Report report = new Report();
-            if (report.ShowDialog() == true)
+            if (report.ShowDialog() != true)
             {
-
+                MessageBox.Show("Экспорт данных произошел неудачно!", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-            else
-            {
-
-            }
-
         }
-
     }
-
 }
